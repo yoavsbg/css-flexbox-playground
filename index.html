@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Flexbox Playground</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            background-color: #f3f4f6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 56rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 0.5rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: #4b5563;
+            margin-bottom: 2rem;
+        }
+
+        .controls {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+        }
+
+        select {
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            width: 200px;
+        }
+
+        .preview-area {
+            min-height: 16rem;
+            padding: 1rem;
+            background-color: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+
+        .box {
+            width: 60px;
+            padding: 20px 10px;
+            margin: 5px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .code-container {
+            position: relative;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #e5e7eb;
+            border-radius: 0.375rem;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .copy-button:hover {
+            background-color: #2563eb;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        code {
+            font-family: monospace;
+        }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #4b5563;
+        }
+
+        .footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSS Flexbox Playground</h1>
+        <p class="description">Experiment with different flex properties to understand how they affect layout. Adjust the controls below to see changes in real-time and copy the generated CSS code.</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label for="flex-direction">flex-direction:</label>
+                <select id="flex-direction">
+                    <option value="row">row</option>
+                    <option value="column">column</option>
+                    <option value="row-reverse">row-reverse</option>
+                    <option value="column-reverse">column-reverse</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="justify-content">justify-content:</label>
+                <select id="justify-content">
+                    <option value="flex-start">flex-start</option>
+                    <option value="center">center</option>
+                    <option value="flex-end">flex-end</option>
+                    <option value="space-between">space-between</option>
+                    <option value="space-around">space-around</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="align-items">align-items:</label>
+                <select id="align-items">
+                    <option value="stretch">stretch</option>
+                    <option value="flex-start">flex-start</option>
+                    <option value="center">center</option>
+                    <option value="flex-end">flex-end</option>
+                    <option value="baseline">baseline</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="flex-wrap">flex-wrap:</label>
+                <select id="flex-wrap">
+                    <option value="nowrap">nowrap</option>
+                    <option value="wrap">wrap</option>
+                    <option value="wrap-reverse">wrap-reverse</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="preview-area" id="preview">
+            <div class="box" style="background-color: #3B82F6;">1</div>
+            <div class="box" style="background-color: #10B981;">2</div>
+            <div class="box" style="background-color: #F59E0B;">3</div>
+            <div class="box" style="background-color: #EF4444;">4</div>
+            <div class="box" style="background-color: #8B5CF6;">5</div>
+        </div>
+
+        <div class="code-container">
+            <button class="copy-button" id="copy-button">Copy</button>
+            <pre><code id="css-code"></code></pre>
+        </div>
+
+        <div class="footer">
+            Made with 💙 by <a href="https://x.com/yoavsbg" target="_blank" rel="noopener noreferrer">Yoav Sabag</a>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const preview = document.getElementById('preview');
+        const flexDirection = document.getElementById('flex-direction');
+        const justifyContent = document.getElementById('justify-content');
+        const alignItems = document.getElementById('align-items');
+        const flexWrap = document.getElementById('flex-wrap');
+        const cssCode = document.getElementById('css-code');
+        const copyButton = document.getElementById('copy-button');
+
+        // Set initial values
+        flexDirection.value = 'row';
+        justifyContent.value = 'space-around';
+        alignItems.value = 'flex-start';
+        flexWrap.value = 'nowrap';
+
+        // Update preview and code
+        function updateDisplay() {
+            // Update preview
+            preview.style.display = 'flex';
+            preview.style.flexDirection = flexDirection.value;
+            preview.style.justifyContent = justifyContent.value;
+            preview.style.alignItems = alignItems.value;
+            preview.style.flexWrap = flexWrap.value;
+
+            // Update code
+            const code = `.container {
+  display: flex;
+  flex-direction: ${flexDirection.value};
+  justify-content: ${justifyContent.value};
+  align-items: ${alignItems.value};
+  flex-wrap: ${flexWrap.value};
+}`;
+            cssCode.textContent = code;
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const textarea = document.createElement('textarea');
+            textarea.value = cssCode.textContent;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy';
+            }, 2000);
+        }
+
+        // Add event listeners
+        flexDirection.addEventListener('change', updateDisplay);
+        justifyContent.addEventListener('change', updateDisplay);
+        alignItems.addEventListener('change', updateDisplay);
+        flexWrap.addEventListener('change', updateDisplay);
+        copyButton.addEventListener('click', copyToClipboard);
+
+        // Initial display
+        updateDisplay();
+    </script>
+</body>
+</html>

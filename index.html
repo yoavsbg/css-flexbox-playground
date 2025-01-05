@@ -83,7 +83,7 @@
 
         .main-content {
             display: grid;
-            grid-template-columns: 1fr 300px;
+            grid-template-columns: 300px 1fr;
             gap: var(--spacing-xl);
             margin-top: var(--spacing-xl);
         }
@@ -284,10 +284,7 @@
             transition: background-color 0.3s;
         }
 
-        .copy-button {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
+        .button {
             padding: 0.375rem 0.75rem;
             background-color: #3b82f6;
             color: white;
@@ -297,7 +294,13 @@
             transition: background-color 0.2s;
         }
 
-        .copy-button:hover {
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+
+        .button:hover {
             background-color: #2563eb;
         }
 
@@ -338,14 +341,6 @@
         <p class="description">Experiment with different flex properties to understand how they affect layout. Adjust the controls below to see changes in real-time and copy the generated CSS code.</p>
 
         <div class="main-content">
-            <div class="preview-area" id="preview">
-                <div class="box" style="background-color: #3B82F6;">1</div>
-                <div class="box" style="background-color: #10B981;">2</div>
-                <div class="box" style="background-color: #F59E0B;">3</div>
-                <div class="box" style="background-color: #EF4444;">4</div>
-                <div class="box" style="background-color: #8B5CF6;">5</div>
-            </div>
-
             <div class="controls-and-code">
                 <div class="controls">
                     <div class="control-group">
@@ -390,10 +385,22 @@
                     </div>
                 </div>
 
+                <div class="controls-extra">
+                    <button class="button" id="add-box-button">Add box</button>
+                </div>
+
                 <div class="code-container">
-                    <button class="copy-button" id="copy-button">Copy</button>
+                    <button class="copy-button button" id="copy-button">Copy</button>
                     <pre><code id="css-code"></code></pre>
                 </div>
+            </div>
+
+            <div class="preview-area" id="preview">
+                <div class="box" style="background-color: #A6CEE3;">1</div>
+                <div class="box" style="background-color: #1F78B4;">2</div>
+                <div class="box" style="background-color: #B2DF8A;">3</div>
+                <div class="box" style="background-color: #33A02C;">4</div>
+                <div class="box" style="background-color: #FB9A99;">5</div>
             </div>
         </div>
 
@@ -413,6 +420,7 @@
         const flexWrap = document.getElementById('flex-wrap');
         const cssCode = document.getElementById('css-code');
         const copyButton = document.getElementById('copy-button');
+        const addBoxButton = document.getElementById('add-box-button');
         const themeToggle = document.querySelector('.theme-toggle');
         const sunIcon = themeToggle.querySelector('.fa-sun');
         const moonIcon = themeToggle.querySelector('.fa-moon');
@@ -477,11 +485,22 @@
             }, 2000);
         }
 
+        const colors = 'A6CEE31F78B4B2DF8A33A02CFB9A99E31A1CFDBF6FFF7F00CAB2D66A3D9AFFFF99B15928';
+        function addBox() {
+            const n = preview.children.length;
+            const box = document.createElement('div');
+            box.classList.add('box');
+            box.innerText = (n + 1).toString();
+            box.style.backgroundColor = '#'+colors.substring((n % 12)*6, (n % 12)*6+6);
+            preview.appendChild(box);
+        }
+
         // Add event listeners
         flexDirection.addEventListener('change', updateDisplay);
         justifyContent.addEventListener('change', updateDisplay);
         alignItems.addEventListener('change', updateDisplay);
         flexWrap.addEventListener('change', updateDisplay);
+        addBoxButton.addEventListener('click', addBox);
         copyButton.addEventListener('click', copyToClipboard);
 
         // Initial display
